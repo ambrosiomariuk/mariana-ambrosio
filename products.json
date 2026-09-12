@@ -1,0 +1,62 @@
+[
+  {
+    "id": "prod_1",
+    "code": "221",
+    "title": "Vaso de Planta Auto-irrigável com Sensor Inteligente",
+    "category": "Casa & Decoração",
+    "price": "R$ 49,90",
+    "tag": "Destaque",
+    "link": "https://shopee.com.br",
+    "image": "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80",
+    "featured": true,
+    "createdAt": "2026-09-01T10:00:00Z"
+  },
+  {
+    "id": "prod_2",
+    "code": "220",
+    "title": "Limpador de Superfície de Alta Pressão em Aço Inox Potente",
+    "category": "Cozinha",
+    "price": "R$ 68,00",
+    "tag": "Viral TikTok",
+    "link": "https://shopee.com.br",
+    "image": "https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=600&q=80",
+    "featured": true,
+    "createdAt": "2026-08-30T15:30:00Z"
+  },
+  {
+    "id": "prod_3",
+    "code": "219",
+    "title": "Organizador Acrílico Giratório 360° para Maquiagem e Skincare",
+    "category": "Beleza & Cuidados",
+    "price": "R$ 39,90",
+    "tag": "Favorito",
+    "link": "https://amazon.com.br",
+    "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+    "featured": false,
+    "createdAt": "2026-08-28T12:00:00Z"
+  },
+  {
+    "id": "prod_4",
+    "code": "218",
+    "title": "Mini Selador Térmico Portátil de Embalagens a Vácuo",
+    "category": "Cozinha",
+    "price": "R$ 22,50",
+    "tag": "Prático",
+    "link": "https://shopee.com.br",
+    "image": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=80",
+    "featured": false,
+    "createdAt": "2026-08-25T09:15:00Z"
+  },
+  {
+    "id": "prod_5",
+    "code": "217",
+    "title": "Lâmpada LED Sem Fio com Sensor de Presença para Armários",
+    "category": "Tecnologia",
+    "price": "R$ 34,90",
+    "tag": "Indispensável",
+    "link": "https://mercadolivre.com.br",
+    "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80",
+    "featured": false,
+    "createdAt": "2026-08-22T18:40:00Z"
+  }
+]
