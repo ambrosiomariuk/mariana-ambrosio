@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo | Achadinhos da Mari</title>
+
+  <!-- Fontes Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Ícones Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Estilos do Painel Admin -->
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Modal de Autenticação / Senha -->
+  <div id="authOverlay" class="auth-overlay">
+    <div class="auth-box">
+      <img src="perfil.jpg" alt="Mariana Ambrosio" class="auth-avatar" onerror="this.src='WhatsApp Image 2026-08-31 at 17.36.17.jpeg'">
+      <h3>Painel da Mari</h3>
+      <p>Digite a senha administrativa para gerenciar seus produtos e links.</p>
+      
+      <form class="auth-form" onsubmit="handleLogin(event)">
+        <input type="password" id="authPassword" placeholder="••••••••" autofocus autocomplete="current-password">
+        <div id="authError" class="auth-error">Senha incorreta. Tente novamente.</div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+          <i class="fa-solid fa-lock-open"></i> Acessar Painel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-layout">
+    
+    <!-- Barra Superior de Navegação -->
+    <nav class="admin-navbar">
+      <div class="brand-section">
+        <img src="perfil.jpg" alt="Mariana Ambrosio" class="brand-avatar" onerror="this.src='WhatsApp Image 2026-08-31 at 17.36.17.jpeg'">
+        <div>
+          <div class="brand-title">Mariana Ambrosio</div>
+          <span class="brand-badge">Admin de Achadinhos</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button type="button" class="btn-nav" onclick="exportProductsJson()" title="Baixar products.json para publicar no GitHub">
+          <i class="fa-solid fa-download"></i>
+          <span>Baixar products.json</span>
+        </button>
+        <a href="achadinhos.html" target="_blank" class="btn-nav primary">
+          <span>Ver Vitrine</span>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        <button type="button" class="btn-nav" onclick="handleLogout()" title="Sair do painel">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="admin-container">
+      
+      <section class="github-publish-note">
+        <i class="fa-brands fa-github"></i>
+        <div><strong>Modo GitHub Pages</strong>
+        <span>Cadastre e edite aqui. Quando terminar, clique em <b>Baixar products.json</b> e substitua o arquivo no GitHub.</span></div>
+      </section>
+
+      <!-- Linha de Estatísticas Rápidas -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fa-solid fa-bag-shopping"></i>
+          </div>
+          <div class="stat-info">
+            <h4>Total de Achadinhos</h4>
+            <div class="stat-value" id="statTotal">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fa-solid fa-tags"></i>
+          </div>
+          <div class="stat-info">
+            <h4>Categorias Ativas</h4>
+            <div class="stat-value" id="statCategories">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <div class="stat-info">
+            <h4>Em Destaque</h4>
+            <div class="stat-value" id="statFeatured">0</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Formulário de Cadastro / Edição -->
+      <section class="admin-card">
+        <div class="card-header-flex">
+          <div>
+            <h2 id="formTitle"><i class="fa-solid fa-plus-circle"></i> Cadastrar Novo Achadinho</h2>
+            <p style="font-size: 13px; color: #706B66; margin-top: 4px;">Preencha os dados e salve o produto. Depois baixe o products.json para atualizar a vitrine.</p>
+          </div>
+        </div>
+
+        <form id="productForm">
+          <div class="form-grid">
+            
+            <!-- Coluna de Imagem / Dropzone -->
+            <div class="image-column">
+              <label style="font-size: 12.5px; font-weight: 600; display: block; margin-bottom: 8px;">
+                Foto do Produto
+              </label>
+              
+              <div class="upload-dropzone" id="uploadDropzone" title="Clique ou arraste uma foto aqui">
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                <img id="previewImg" class="preview-img" style="display: none;" alt="Preview">
+                
+                <div class="upload-placeholder" id="uploadPlaceholder">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                  <span>Escolher Imagem</span>
+                  <small>JPG, PNG ou WEBP (1:1)</small>
+                </div>
+
+                <div class="upload-overlay-badge">
+                  <i class="fa-solid fa-camera"></i> Trocar foto
+                </div>
+              </div>
+            </div>
+
+            <!-- Coluna de Campos -->
+            <div class="fields-column">
+              
+              <!-- Código e Categoria -->
+              <div class="field-group-row">
+                <div class="field-group">
+                  <label for="productCode">
+                    <span>Número / Código</span>
+                  </label>
+                  <div class="code-input-wrapper">
+                    <input type="text" id="productCode" placeholder="Ex: 221" required>
+                    <button type="button" class="btn-suggest" onclick="suggestNextCode()" title="Sugerir próximo número automático">
+                      Auto
+                    </button>
+                  </div>
+                </div>
+
+                <div class="field-group">
+                  <label for="productCategory">Categoria</label>
+                  <select id="productCategory" required>
+                    <!-- Preenchido via JS -->
+                  </select>
+                </div>
+              </div>
+
+              <!-- Título do Produto -->
+              <div class="field-group">
+                <label for="productTitle">Título / Nome do Achadinho</label>
+                <input type="text" id="productTitle" placeholder="Ex: Vaso de planta com sensor inteligente auto-irrigável" required>
+              </div>
+
+              <!-- Link de Afiliado -->
+              <div class="field-group">
+                <label for="productLink">
+                  <span>Link de Afiliado (Shopee, Amazon, etc.)</span>
+                  <span style="font-weight: 400; font-size: 11px; color: #8E5D47;">Onde o fã compra</span>
+                </label>
+                <input type="url" id="productLink" placeholder="https://shope.ee/... ou https://amzn.to/..." required>
+              </div>
+
+              <!-- Preço e Selo/Tag -->
+              <div class="field-group-row">
+                <div class="field-group">
+                  <label for="productPrice">Preço Estimado <small style="font-weight: 400; color: #888;">(Opcional)</small></label>
+                  <input type="text" id="productPrice" placeholder="Ex: R$ 49,90">
+                </div>
+
+                <div class="field-group">
+                  <label for="productTag">Selo de Destaque <small style="font-weight: 400; color: #888;">(Opcional)</small></label>
+                  <input type="text" id="productTag" placeholder="Ex: Mais Vendido, Frete Grátis">
+                </div>
+              </div>
+
+              <!-- Checkbox Destaque -->
+              <div class="toggle-row">
+                <input type="checkbox" id="productFeatured" style="width: 18px; height: 18px; cursor: pointer;">
+                <label for="productFeatured" class="toggle-label">⭐ Fixar como destaque no topo</label>
+              </div>
+
+              <!-- Botões de Ação -->
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary" id="btnCancelEdit" style="display: none;">
+                  Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary" id="btnSaveProduct">
+                  <i class="fa-solid fa-floppy-disk"></i> Salvar Achadinho
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        </form>
+      </section>
+
+      <!-- Tabela de Gerenciamento de Achadinhos -->
+      <section class="admin-card">
+        <div class="card-header-flex">
+          <div>
+            <h2><i class="fa-solid fa-list-check"></i> Gerenciar Achadinhos Cadastrados</h2>
+            <p style="font-size: 13px; color: #706B66; margin-top: 4px;">Edite links, substitua fotos ou exclua itens da sua vitrine.</p>
+          </div>
+        </div>
+
+        <!-- Barra de Busca e Filtros da Tabela -->
+        <div class="table-filters">
+          <input type="text" id="searchTable" class="search-input-admin" placeholder="🔍 Buscar por número, título ou categoria...">
+          <select id="filterCategory" class="select-filter-admin">
+            <!-- Preenchido via JS -->
+          </select>
+        </div>
+
+        <!-- Tabela -->
+        <div class="table-responsive">
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th style="width: 70px;">Foto</th>
+                <th style="width: 80px;">Código</th>
+                <th>Achadinho</th>
+                <th>Categoria</th>
+                <th>Selo</th>
+                <th>Link</th>
+                <th style="width: 100px; text-align: center;">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody">
+              <!-- Preenchido dinamicamente via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Toast de Notificação -->
+  <div id="adminToast" class="admin-toast"></div>
+
+  <!-- Script do Admin -->
+  <script src="admin.js"></script>
+</body>
+</html>

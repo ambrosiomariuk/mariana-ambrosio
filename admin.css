@@ -626,3 +626,6 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+.github-publish-note{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid var(--admin-border);border-radius:var(--radius-md);background:#fff;box-shadow:var(--shadow)}
+.github-publish-note>i{font-size:22px;margin-top:1px}.github-publish-note div{display:flex;flex-direction:column;gap:3px}.github-publish-note strong{font-size:13px}.github-publish-note span{font-size:12px;line-height:1.5;color:var(--admin-text-muted)}
